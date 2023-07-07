@@ -55,43 +55,19 @@ int main (){
                if (a==9){printf("Jogada inválida. Jogue novamente.\n");}
             }
                 pos[a] = XO[j] ;
-        if ((pos[0] == pos[1]) && (pos[1] == pos[2]) && (pos[0] != space[0])) {
-            end = 1;
-            winner = pos[0];
-            break;}
-        else if ((pos[3] == pos[4]) && (pos[4] == pos[5]) && (pos[3] != space[0])) {
-            end = 1;
-            winner = pos[3];
-            break;}
-        else if ((pos[6] == pos[7]) && (pos[7] == pos[8]) && (pos[6] != space[0])) {
-            end = 1;
-            winner = pos[6];
-            break;}
-        else if ((pos[0] == pos[3]) && (pos[3] == pos[6]) && (pos[6] != space[0])){
-            end = 1;
-            winner = pos[6];
-            break;}
-        else if ((pos[1] == pos[4]) && (pos[4] == pos[7]) && (pos[7] != space[0])){
-            end = 1;
-            winner = pos[7];
-            break;}
-        else if ((pos[2] == pos[5]) && (pos[5] == pos[8]) && (pos[8] != space[0])){
-            end = 1;
-            winner = pos[8];
-            break;}
-        else if ((pos[0] == pos[4]) && (pos[4] == pos[8]) && (pos[0] != space[0])){
-            end = 1;
-            winner = pos[0];
-            break;}
-        else if ((pos[2] == pos[4]) && (pos[4] == pos[6]) && (pos[2] != space[0])){
-            end = 1;
-            winner = pos[2];
-            break;}
+        if ((pos[0] == pos[1]) && (pos[1] == pos[2]) && (pos[0] != space[0])) {end = 1;winner = pos[0];break;}
+        else if ((pos[3] == pos[4]) && (pos[4] == pos[5]) && (pos[3] != space[0])) {end = 1;winner = pos[3];break;}
+        else if ((pos[6] == pos[7]) && (pos[7] == pos[8]) && (pos[6] != space[0])) {end = 1;winner = pos[6];break;}
+        else if ((pos[0] == pos[3]) && (pos[3] == pos[6]) && (pos[6] != space[0])){end = 1;winner = pos[6];break;}
+        else if ((pos[1] == pos[4]) && (pos[4] == pos[7]) && (pos[7] != space[0])){end = 1;winner = pos[7];break;}
+        else if ((pos[2] == pos[5]) && (pos[5] == pos[8]) && (pos[8] != space[0])){end = 1;winner = pos[8];break;}
+        else if ((pos[0] == pos[4]) && (pos[4] == pos[8]) && (pos[0] != space[0])){end = 1;winner = pos[0];break;}
+        else if ((pos[2] == pos[4]) && (pos[4] == pos[6]) && (pos[2] != space[0])){end = 1;winner = pos[2];break;}
         else if ((pos[0] != space[0]) && (pos[1] != space[0]) && (pos[2] != space[0]) && (pos[3] != space[0]) && (pos[4] != space[0]) && (pos[5] != space[0]) && (pos[6] != space[0]) && (pos[7] != space[0]) && (pos[8] != space[0]))
-        {end = 2;
-        break;}
+        {end = 2;break;}
             }    
     }
+    clear();
     if (end == 1){
         table(pos);
         printf("Fim de jogo! O vencedor foi o %c.\n", winner);}
