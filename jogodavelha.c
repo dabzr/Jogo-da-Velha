@@ -30,7 +30,6 @@ int pos_num(char n[3], char p[10]){
                 if (n[0] == test[0]){temp = -1;}
                 else if(n[0] == test[1]){temp = 2;}
                 else if (n[0] == test[2]){temp = 5;}
-                //int temp2 = n[1];
                 int position = temp + number;
                 if (p[position] != test[6]){return 9;}
                 else{return position;}
