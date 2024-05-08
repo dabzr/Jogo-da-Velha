@@ -14,37 +14,46 @@ void table(char p[10]){
 }
 int pos_num(char n[3], char p[10]){
     char test[8] = "abc123 ";
-    int number;
-    if (n[1]==test[3]){number = 1;}
-    else if (n[1]==test[4]){number = 2;}
-    else if (n[1]==test[5]){number = 3;}
-    else {
-        number = 4;
-        return 9;}
-    if ((number < 4) && (number > 0)){
-        if ((n[0] != test[0]) && (n[0] != test[1]) && (n[0] != test[2])){return 9;}
-        else{
-            if ((n[1] != test[3]) && (n[1] != test[4]) && (n[1] != test[5])){return 9;}
-            else{
-                int temp;
-                if (n[0] == test[0]){temp = -1;}
-                else if(n[0] == test[1]){temp = 2;}
-                else if (n[0] == test[2]){temp = 5;}
-                int position = temp + number;
-                if (p[position] != test[6]){return 9;}
-                else{return position;}
-                }}}
-    else{return 9;}}
+    int number = 4;
+      
+    for (int i = 1; i < 4; i++) {
+        if(n[1]==test[i+2]) {number = i;break;}
+    }
+    if (number==4) {return 9;}
+
+    if (!((number < 4) && (number > 0))){return 9;}
+    if ((n[0] != test[0]) && (n[0] != test[1]) && (n[0] != test[2])){return 9;}
+    if ((n[1] != test[3]) && (n[1] != test[4]) && (n[1] != test[5])){return 9;}
+    int temp;
+    if (n[0] == test[0]){temp = -1;}
+    else if(n[0] == test[1]){temp = 2;}
+    else if (n[0] == test[2]){temp = 5;}
+    int position = temp + number;
+    if (p[position] != test[6]){return 9;}
+    return position;
+}
+char VerifyWinner(char pos[10]){
+    if ((pos[0] == pos[1]) && (pos[1] == pos[2]) && (pos[0] != ' ')) {return pos[0];}
+    if ((pos[3] == pos[4]) && (pos[4] == pos[5]) && (pos[3] != ' ')) {return pos[3];}
+    if ((pos[6] == pos[7]) && (pos[7] == pos[8]) && (pos[6] != ' ')) {return pos[6];}
+    if ((pos[0] == pos[3]) && (pos[3] == pos[6]) && (pos[6] != ' ')) {return pos[6];}
+    if ((pos[1] == pos[4]) && (pos[4] == pos[7]) && (pos[7] != ' ')) {return pos[7];}
+    if ((pos[2] == pos[5]) && (pos[5] == pos[8]) && (pos[8] != ' ')) {return pos[8];}
+    if ((pos[0] == pos[4]) && (pos[4] == pos[8]) && (pos[0] != ' ')) {return pos[0];}
+    if ((pos[2] == pos[4]) && (pos[4] == pos[6]) && (pos[2] != ' ')) {return pos[2];}
+    int count = 0;
+    for (int i = 0; i < 9; i++)
+      if (pos[i] != ' ') {count++;}
+
+    return (count == 9) ? 'E' : ' ';
+}
 int main (){
     char XO[3]= "X0";
     char pos[10] = "         ";
     char num[3];
-    char space[2] = " ";
-    char winner;
-    int end = 0;
-    int j;
-    while(end==0){
-        for (j=0;j<2;j++){
+    char winner = ' ';
+    while(winner==' '){
+        for (int j=0;j<2;j++){
             clear();
             int a = 9;
             while (a==9){
@@ -52,26 +61,14 @@ int main (){
                 printf("Jogador %c insira a posição: ", XO[j]);
                 scanf("%s", num);
                 a = pos_num(num, pos);
-               if (a==9){printf("Jogada inválida. Jogue novamente.\n");}
+                if (a==9){printf("Jogada inválida. Jogue novamente.\n");}
             }
-                pos[a] = XO[j] ;
-        if ((pos[0] == pos[1]) && (pos[1] == pos[2]) && (pos[0] != space[0])) {end = 1;winner = pos[0];break;}
-        else if ((pos[3] == pos[4]) && (pos[4] == pos[5]) && (pos[3] != space[0])) {end = 1;winner = pos[3];break;}
-        else if ((pos[6] == pos[7]) && (pos[7] == pos[8]) && (pos[6] != space[0])) {end = 1;winner = pos[6];break;}
-        else if ((pos[0] == pos[3]) && (pos[3] == pos[6]) && (pos[6] != space[0])){end = 1;winner = pos[6];break;}
-        else if ((pos[1] == pos[4]) && (pos[4] == pos[7]) && (pos[7] != space[0])){end = 1;winner = pos[7];break;}
-        else if ((pos[2] == pos[5]) && (pos[5] == pos[8]) && (pos[8] != space[0])){end = 1;winner = pos[8];break;}
-        else if ((pos[0] == pos[4]) && (pos[4] == pos[8]) && (pos[0] != space[0])){end = 1;winner = pos[0];break;}
-        else if ((pos[2] == pos[4]) && (pos[4] == pos[6]) && (pos[2] != space[0])){end = 1;winner = pos[2];break;}
-        else if ((pos[0] != space[0]) && (pos[1] != space[0]) && (pos[2] != space[0]) && (pos[3] != space[0]) && (pos[4] != space[0]) && (pos[5] != space[0]) && (pos[6] != space[0]) && (pos[7] != space[0]) && (pos[8] != space[0]))
-        {end = 2;break;}
-            }    
+            pos[a] = XO[j];
+            winner = VerifyWinner(pos);
+            if (winner != ' ') {break;}
+        }    
     }
     clear();
-    if (end == 1){
-        table(pos);
-        printf("Fim de jogo! O vencedor foi o %c.\n", winner);}
-    else{
-        table(pos);
-        printf("Fim de jogo! Empate!\n");}
+    table(pos);
+    (winner == 'E') ? printf("Fim de jogo! Empate!\n") : printf("Fim de jogo! O vencedor foi o %c.\n", winner);
 }
