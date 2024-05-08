@@ -1,5 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+
+#define INVALID_POS 9
+
 void clear(){
     #if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
         system("clear");
@@ -14,22 +17,19 @@ void table(char p[10]){
 }
 int pos_num(char n[3], char p[10]){
     char test[8] = "abc123 ";
-    int number = 4;
-      
+    int number = 4, temp;
     for (int i = 1; i < 4; i++) {
         if(n[1]==test[i+2]) {number = i;break;}
     }
-    if (number==4) {return 9;}
-
-    if (!((number < 4) && (number > 0))){return 9;}
-    if ((n[0] != test[0]) && (n[0] != test[1]) && (n[0] != test[2])){return 9;}
-    if ((n[1] != test[3]) && (n[1] != test[4]) && (n[1] != test[5])){return 9;}
-    int temp;
+    if (number==4) {return INVALID_POS;}
+    if (!((number < 4) && (number > 0))){return INVALID_POS;}
+    if ((n[0] != test[0]) && (n[0] != test[1]) && (n[0] != test[2])){return INVALID_POS;}
+    if ((n[1] != test[3]) && (n[1] != test[4]) && (n[1] != test[5])){return INVALID_POS;}
     if (n[0] == test[0]){temp = -1;}
     else if(n[0] == test[1]){temp = 2;}
     else if (n[0] == test[2]){temp = 5;}
     int position = temp + number;
-    if (p[position] != test[6]){return 9;}
+    if (p[position] != test[6]){return INVALID_POS;}
     return position;
 }
 char VerifyWinner(char pos[10]){
@@ -47,6 +47,18 @@ char VerifyWinner(char pos[10]){
 
     return (count == 9) ? 'E' : ' ';
 }
+void UpdatePosition(char pos[10], char XO) {
+    char num[3];
+    int a = INVALID_POS;
+    while (a==INVALID_POS){
+        table(pos);
+        printf("Jogador %c insira a posição: ", XO);
+        scanf("%2s", num);
+        a = pos_num(num, pos);
+        if (a==INVALID_POS){printf("Jogada inválida. Jogue novamente.\n");}
+    }
+    pos[a] = XO;
+} 
 int main (){
     char XO[3]= "X0";
     char pos[10] = "         ";
@@ -55,18 +67,10 @@ int main (){
     while(winner==' '){
         for (int j=0;j<2;j++){
             clear();
-            int a = 9;
-            while (a==9){
-                table(pos);
-                printf("Jogador %c insira a posição: ", XO[j]);
-                scanf("%s", num);
-                a = pos_num(num, pos);
-                if (a==9){printf("Jogada inválida. Jogue novamente.\n");}
-            }
-            pos[a] = XO[j];
+            UpdatePosition(pos, XO[j]);
             winner = VerifyWinner(pos);
             if (winner != ' ') {break;}
-        }    
+        }
     }
     clear();
     table(pos);
