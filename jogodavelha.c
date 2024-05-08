@@ -1,11 +1,12 @@
+#include "jogodavelha.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 #define INVALID_POS 9
 
 void clear(){
-    #if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
-        system("clear");
+#if defined(__linux__) || defined(__unix__) || defined(__APPLE__)
+system("clear");
     #endif
 
     #if defined(_WIN32) || defined(_WIN64)
@@ -33,14 +34,11 @@ int pos_num(char n[3], char p[10]){
     return position;
 }
 char VerifyWinner(char pos[10]){
-    if ((pos[0] == pos[1]) && (pos[1] == pos[2]) && (pos[0] != ' ')) {return pos[0];}
-    if ((pos[3] == pos[4]) && (pos[4] == pos[5]) && (pos[3] != ' ')) {return pos[3];}
-    if ((pos[6] == pos[7]) && (pos[7] == pos[8]) && (pos[6] != ' ')) {return pos[6];}
-    if ((pos[0] == pos[3]) && (pos[3] == pos[6]) && (pos[6] != ' ')) {return pos[6];}
-    if ((pos[1] == pos[4]) && (pos[4] == pos[7]) && (pos[7] != ' ')) {return pos[7];}
-    if ((pos[2] == pos[5]) && (pos[5] == pos[8]) && (pos[8] != ' ')) {return pos[8];}
-    if ((pos[0] == pos[4]) && (pos[4] == pos[8]) && (pos[0] != ' ')) {return pos[0];}
-    if ((pos[2] == pos[4]) && (pos[4] == pos[6]) && (pos[2] != ' ')) {return pos[2];}
+    for (int i = 0; i < 3; i++) {
+      if ((pos[i*3] == pos[i*3+1]) && (pos[i*3+1] == pos[i*3+2]) && (pos[i*3] != ' ')) {return pos[i*3];}
+      if ((pos[i] == pos[i+3]) && (pos[i+3] == pos[i+6]) && (pos[i+6] != ' ')) {return pos[i+6];}
+      if ((pos[i] == pos[4]) && (pos[4] == pos[8-i]) && (pos[i] != ' ')) {return pos[i];}
+    }
     int count = 0;
     for (int i = 0; i < 9; i++)
       if (pos[i] != ' ') {count++;}
@@ -58,21 +56,4 @@ void UpdatePosition(char pos[10], char XO) {
         if (a==INVALID_POS){printf("Jogada inválida. Jogue novamente.\n");}
     }
     pos[a] = XO;
-} 
-int main (){
-    char XO[3]= "X0";
-    char pos[10] = "         ";
-    char num[3];
-    char winner = ' ';
-    while(winner==' '){
-        for (int j=0;j<2;j++){
-            clear();
-            UpdatePosition(pos, XO[j]);
-            winner = VerifyWinner(pos);
-            if (winner != ' ') {break;}
-        }
-    }
-    clear();
-    table(pos);
-    (winner == 'E') ? printf("Fim de jogo! Empate!\n") : printf("Fim de jogo! O vencedor foi o %c.\n", winner);
 }
